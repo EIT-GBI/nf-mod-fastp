@@ -19,4 +19,11 @@ process TRIM {
       -o ${sample}_R1.trimmed.fastq.gz -O ${sample}_R2.trimmed.fastq.gz \\
       -h ${sample}.fastp.html -j ${sample}.fastp.json
     """
+
+    stub:
+    """
+    which fastp && fastp --version 2>&1 | head -1
+    touch ${sample}_R1.trimmed.fastq.gz ${sample}_R2.trimmed.fastq.gz \\
+          ${sample}.fastp.html ${sample}.fastp.json
+    """
 }
