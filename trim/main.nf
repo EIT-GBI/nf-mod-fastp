@@ -1,6 +1,6 @@
 // Adapter trimming
 
-process TRIM {
+process FASTP_TRIM {
     tag "$meta.id"
     cpus params.alignment.threads
     publishDir "${params.outdir}/trimmed", mode: 'link', pattern: '*.{html,json}'
