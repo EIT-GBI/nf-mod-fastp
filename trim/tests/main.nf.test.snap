@@ -1,0 +1,43 @@
+{
+    "FASTP_TRIM - stub - wiring and output names": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "/Users/pauline.fourgoux/Documents/Code/nf-dnaseq/modules/fastp/.nf-test/tests/517f017c015f7f23771d92af44bf6138/work/cd/ae9c3e6c65ecc5dc47966f5e8e4f9d/test_R1.trimmed.fastq.gz",
+                        "/Users/pauline.fourgoux/Documents/Code/nf-dnaseq/modules/fastp/.nf-test/tests/517f017c015f7f23771d92af44bf6138/work/cd/ae9c3e6c65ecc5dc47966f5e8e4f9d/test_R2.trimmed.fastq.gz"
+                    ]
+                ],
+                "1": [
+                    "test.fastp.html:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "2": [
+                    "test.fastp.json:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "html": [
+                    "test.fastp.html:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "log": [
+                    "test.fastp.json:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "/Users/pauline.fourgoux/Documents/Code/nf-dnaseq/modules/fastp/.nf-test/tests/517f017c015f7f23771d92af44bf6138/work/cd/ae9c3e6c65ecc5dc47966f5e8e4f9d/test_R1.trimmed.fastq.gz",
+                        "/Users/pauline.fourgoux/Documents/Code/nf-dnaseq/modules/fastp/.nf-test/tests/517f017c015f7f23771d92af44bf6138/work/cd/ae9c3e6c65ecc5dc47966f5e8e4f9d/test_R2.trimmed.fastq.gz"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "26.04.6"
+        },
+        "timestamp": "2026-09-15T14:04:49.156475"
+    }
+}
