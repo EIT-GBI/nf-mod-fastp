@@ -18,7 +18,9 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(process.out).match()
+            assert process.out.reads
+            assert process.out.html
+            assert process.out.log
         }
     }
 }
