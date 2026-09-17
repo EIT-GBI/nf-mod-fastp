@@ -4,6 +4,9 @@ nextflow_process {
     script "../main.nf"
     process "FASTP_TRIM"
 
+    def TEST_R1 = 'file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)'
+    def TEST_R2 = 'file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true)'
+
     test("FASTP_TRIM - stub - wiring and output names") {
 
         options "-stub-run"
@@ -11,7 +14,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [[id:'test'], file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true), file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true)]
+                input[0] = [[id:'test'], ${TEST_R1}, ${TEST_R2}]
                 """
             }
         }
@@ -21,6 +24,72 @@ nextflow_process {
             assert process.out.reads
             assert process.out.html
             assert process.out.log
+        }
+    }
+
+    test("FASTP_TRIM - no thresholds set - uses fastp's own defaults") {
+
+        config "../../tests.config"
+
+        when {
+            process {
+                """
+                input[0] = [[id:'test'], ${TEST_R1}, ${TEST_R2}]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def report = new groovy.json.JsonSlurper().parse(new File(process.out.log[0].toString()))
+
+            // fastp records its own command line, which is what pins the params
+            // to the flags they produce
+            assert !report.command.contains(' -q ')
+            assert !report.command.contains(' -l ')
+            assert report.filtering_result.passed_filter_reads == 198
+            assert report.filtering_result.too_short_reads == 0
+
+            // fastp writes no timestamp, so the trimmed FASTQs are stable. The
+            // json is not snapshotted whole: it carries fastp_version, which
+            // moves when the image is rebuilt.
+            assert snapshot(process.out.reads, report.filtering_result).match()
+        }
+    }
+
+    test("FASTP_TRIM - params.trimming drives the quality and length thresholds") {
+
+        config "../../tests.config"
+
+        when {
+            params {
+                trimming {
+                    min_base_quality = 30
+                    min_read_length  = 100
+                }
+            }
+            process {
+                """
+                input[0] = [[id:'test'], ${TEST_R1}, ${TEST_R2}]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def report = new groovy.json.JsonSlurper().parse(new File(process.out.log[0].toString()))
+
+            assert report.command.contains('-q 30')
+            assert report.command.contains('-l 100')
+            // both thresholds have to actually bite: -l shows up as too_short,
+            // -q as low_quality, and both are 0/2 with fastp's defaults
+            assert report.filtering_result.too_short_reads == 20
+            assert report.filtering_result.low_quality_reads == 14
+            assert report.filtering_result.passed_filter_reads == 166
+
+            assert snapshot(process.out.reads, report.filtering_result).match()
         }
     }
 }
