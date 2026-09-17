@@ -12,16 +12,9 @@ process FASTP_TRIM {
     path("${meta.id}.fastp.json"), emit: log
 
     script:
-    // Trimming thresholds belong to the module rather than the consuming
-    // pipeline: every pipeline sets the same params.trimming.* names and the
-    // fastp flags are assembled here, once. Unset means fastp's own default.
-    def qual_opt = params.trimming?.min_base_quality != null ? "-q ${params.trimming.min_base_quality}" : ''
-    def len_opt  = params.trimming?.min_read_length  != null ? "-l ${params.trimming.min_read_length}"  : ''
     def args = task.ext.args ?: ''
     """
     fastp \\
-      ${qual_opt} \\
-      ${len_opt} \\
       ${args} \\
       -w ${task.cpus} \\
       -i ${r1} -I ${r2} \\

@@ -11,18 +11,6 @@ tools:
       description: |
         fastp
 
-params:
-  - trimming.min_base_quality:
-      type: integer
-      description: |
-        Minimum base quality for a base to be qualified; becomes `-q <value>`.
-        Omit to use fastp's default.
-  - trimming.min_read_length:
-      type: integer
-      description: |
-        Reads shorter than this are discarded; becomes `-l <value>`. Omit to use
-        fastp's default.
-
 input:
   - reads:
       type: map/file

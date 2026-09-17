@@ -21,44 +21,17 @@ module reusable across pipelines that want different result layouts.
 
 ## Tool arguments
 
-Extra tool flags are passed through `task.ext.args`:
+Flags are passed through `task.ext.args` rather than read from pipeline
+`params`, so the module never depends on a particular pipeline's parameter
+names:
 
 ```groovy
 process {
     withName: FASTP_TRIM {
-        ext.args = '--some-flag'
+        ext.args = '-q 30 -l 100'
     }
 }
 ```
-
-## Module-owned parameters
-
-Where a setting is a property of what the module *does* rather than of a
-particular pipeline, the module owns it: it declares the `params` names and
-builds the tool invocation from them, so every consuming pipeline configures it
-the same way instead of each one re-deriving the same flags.
-
-| Param | Becomes |
-| --- | --- |
-| `params.trimming.min_base_quality` | `-q <value>` |
-| `params.trimming.min_read_length` | `-l <value>` |
-
-```groovy
-params {
-    trimming {
-        min_base_quality = 30
-        min_read_length  = 100
-    }
-}
-```
-
-Either may be left unset, which drops the flag and leaves fastp's own default in
-place, so a pipeline that does not set `params.trimming` keeps its previous
-behaviour.
-
-Do **not** declare defaults for these in `conf/module.config`. Pipelines
-normally `includeConfig` that file *after* their own `params` block, so a
-default there would silently overwrite whatever the pipeline had set.
 
 ## Use as submodule
 
@@ -95,13 +68,14 @@ Nextflow 26.04.4 or newer.
 
 `nf-test test`. There is a stub test covering wiring and output names, and tests
 that run fastp for real against `ghcr.io/eit-gbi/nf-mod-fastp:latest` and
-snapshot what comes out. The real tests need Docker.
+snapshot what comes out. The real tests need Docker, and `tests-args.config`
+adds trimming flags through `ext.args`.
 
 fastp writes no timestamp, so the trimmed FASTQs are stable and are snapshotted
 directly. The JSON report is not snapshotted whole, because it carries
 `fastp_version`, which moves whenever the image is rebuilt. Instead the tests
-assert on its `command` field, which pins the params to the flags they produce,
-and on `filtering_result`, where `-l` shows up as `too_short_reads` and `-q` as
+assert on its `command` field, which shows what reached the tool, and on
+`filtering_result`, where `-l` shows up as `too_short_reads` and `-q` as
 `low_quality_reads`.
 
 ## Releasing

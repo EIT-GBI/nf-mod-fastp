@@ -1,5 +1,5 @@
 {
-    "FASTP_TRIM - params.trimming drives the quality and length thresholds": {
+    "FASTP_TRIM - passes trimming flags through from ext.args": {
         "content": [
             [
                 [
@@ -22,9 +22,9 @@
             "nf-test": "0.9.3",
             "nextflow": "26.04.6"
         },
-        "timestamp": "2026-09-17T13:27:56.822035"
+        "timestamp": "2026-09-17T14:36:24.667542"
     },
-    "FASTP_TRIM - no thresholds set - uses fastp's own defaults": {
+    "FASTP_TRIM - no ext.args - uses fastp's own defaults": {
         "content": [
             [
                 [
@@ -47,6 +47,6 @@
             "nf-test": "0.9.3",
             "nextflow": "26.04.6"
         },
-        "timestamp": "2026-09-17T13:27:53.747194"
+        "timestamp": "2026-09-17T14:36:21.466671"
     }
 }

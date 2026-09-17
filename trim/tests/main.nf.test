@@ -27,7 +27,7 @@ nextflow_process {
         }
     }
 
-    test("FASTP_TRIM - no thresholds set - uses fastp's own defaults") {
+    test("FASTP_TRIM - no ext.args - uses fastp's own defaults") {
 
         config "../../tests.config"
 
@@ -44,8 +44,8 @@ nextflow_process {
 
             def report = new groovy.json.JsonSlurper().parse(new File(process.out.log[0].toString()))
 
-            // fastp records its own command line, which is what pins the params
-            // to the flags they produce
+            // fastp records its own command line, which is what shows nothing
+            // was added to it
             assert !report.command.contains(' -q ')
             assert !report.command.contains(' -l ')
             assert report.filtering_result.passed_filter_reads == 198
@@ -58,17 +58,11 @@ nextflow_process {
         }
     }
 
-    test("FASTP_TRIM - params.trimming drives the quality and length thresholds") {
+    test("FASTP_TRIM - passes trimming flags through from ext.args") {
 
-        config "../../tests.config"
+        config "../../tests-args.config"
 
         when {
-            params {
-                trimming {
-                    min_base_quality = 30
-                    min_read_length  = 100
-                }
-            }
             process {
                 """
                 input[0] = [[id:'test'], ${TEST_R1}, ${TEST_R2}]
