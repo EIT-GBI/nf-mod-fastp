@@ -1,0 +1,52 @@
+{
+    "FASTP_TRIM - passes trimming flags through from ext.args": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test_R1.trimmed.fastq.gz:md5,17845e738abefd1677d42042bd888219",
+                    "test_R2.trimmed.fastq.gz:md5,1dfe0d9e8a67ebeba94289c1b307bd4a"
+                ]
+            ],
+            {
+                "passed_filter_reads": 166,
+                "low_quality_reads": 14,
+                "too_many_N_reads": 0,
+                "too_short_reads": 20,
+                "too_long_reads": 0
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "26.04.6"
+        },
+        "timestamp": "2026-09-17T14:36:24.667542"
+    },
+    "FASTP_TRIM - no ext.args - uses fastp's own defaults": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test_R1.trimmed.fastq.gz:md5,67b2bbae47f073e05a97a9c2edce23c7",
+                    "test_R2.trimmed.fastq.gz:md5,25cbdca08e2083dbd4f0502de6b62f39"
+                ]
+            ],
+            {
+                "passed_filter_reads": 198,
+                "low_quality_reads": 2,
+                "too_many_N_reads": 0,
+                "too_short_reads": 0,
+                "too_long_reads": 0
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "26.04.6"
+        },
+        "timestamp": "2026-09-17T14:36:21.466671"
+    }
+}

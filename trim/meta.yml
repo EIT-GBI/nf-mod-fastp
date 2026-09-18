@@ -1,0 +1,39 @@
+name: fastp_trim
+description: |
+  Adapter and quality trimming of paired-end reads.
+keywords:
+  - trimming
+  - adapters
+  - fastq
+  - quality control
+tools:
+  - fastp:
+      description: |
+        fastp
+
+input:
+  - reads:
+      type: map/file
+      description: |
+        Sample metadata map and the paired FASTQ files.
+      pattern: "tuple val(meta), path(r1), path(r2)"
+
+output:
+  - reads:
+      type: map/file
+      description: |
+        Trimmed paired FASTQ files.
+      pattern: "tuple val(meta), path(r1), path(r2)"
+  - html:
+      type: map/file
+      description: |
+        fastp HTML report.
+      pattern: "path(*.fastp.html)"
+  - log:
+      type: map/file
+      description: |
+        fastp JSON report.
+      pattern: "path(*.fastp.json)"
+
+authors:
+  - "EIT Generative Biology Institute"
